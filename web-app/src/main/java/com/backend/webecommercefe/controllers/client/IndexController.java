@@ -30,7 +30,7 @@ public class IndexController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String PRODUCT_SERVICE_URL = "http://localhost:9898/products";
+    private static final String PRODUCT_SERVICE_URL = "http://45.63.79.165:8080/api/v1/products";
     private static final String CATEGORY_SERVICE_URL = "http://localhost:8080/api/v1/categories";
     @Autowired
     private ListableBeanFactory listableBeanFactory;
@@ -50,7 +50,7 @@ public class IndexController {
                     .retrieve()
                     .body(String.class);
 
-            log.info("Product service response: {}", response);
+            log.info("Product service response:");
 
             // Chuyển đổi JSON response thành Map
             Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {

@@ -8,7 +8,7 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" th:href="@{/assets/plugins/fontawesome-free/css/all.min.css}">
     <!-- icheck bootstrap -->
@@ -18,146 +18,170 @@
 </head>
 
 <body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header text-center">
-                <a href="#" class="h1"><b>Clothes</b>SHOP</a>
-            </div>
-            <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="#" class="h1"><b>Clothes</b>SHOP</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Sign in to start your session</p>
 
-                <form id="loginForm">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username" name="username" id="username">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
+            <form id="loginForm">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Username" name="username" id="username">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password"
-                            id="password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="password"
+                           id="password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">
+                                Remember Me
+                            </label>
                         </div>
-                        <div class="col-4">
-                            <button type="button" onclick="login()" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
                     </div>
-                </form>
+                    <div class="col-4">
+                        <button type="button" onclick="login()" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+                </div>
+            </form>
 
-                <p class="mb-1">
-                    <a th:href="@{/account/forgot-password}">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a th:href="@{/account/register}" class="text-center">Register a new membership</a>
-                </p>
-            </div>
+            <p class="mb-1">
+                <a th:href="@{/account/forgot-password}">I forgot my password</a>
+            </p>
+            <p class="mb-0">
+                <a th:href="@{/account/register}" class="text-center">Register a new membership</a>
+            </p>
         </div>
     </div>
+</div>
 
-    <!-- jQuery -->
-    <script th:src="@{/assets/plugins/jquery/jquery.min.js}"></script>
-    <!-- Bootstrap 4 -->
-    <script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <!-- AdminLTE App -->
-    <script th:src="@{/assets/dist/js/adminlte.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-
-
-    <script>
-
-        function login() {
-            console.log("đang trong function login ");
-
-            const username = $('#username').val();
-            const password = $('#password').val();
+<!-- jQuery -->
+<script th:src="@{/assets/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/assets/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/assets/dist/js/adminlte.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 
 
-            const data = {
-                username: username,
-                password: password
-            };
+<script>
+    // Thêm vào đầu file JavaScript hoặc trong một file riêng
+    const publicAPIs = [
+        'http://45.63.79.165:8080/api/v1/products',
+        'http://45.63.79.165:8080/api/account/sign-in',
+        'http://45.63.79.165:8080/api/account/sign-up'
 
-            console.log("data = ", data);
+        // Thêm các API public khác ở đây
+    ];
+
+    function login() {
+        console.log("đang trong function login ");
+
+        const username = $('#username').val();
+        const password = $('#password').val();
 
 
-            // Gửi yêu cầu POST tới API
-            axios.post('http://localhost:8080/api/account/sign-in', data)
-                .then(response => {
-                    console.log('Response:', response.data);
+        const data = {
+            username: username,
+            password: password
+        };
 
-                    var status = response.data.data.status_code_value;
+        console.log("data = ", data);
 
-                    if (status == 200) {
-                        var token = response.data.data.body.token;
-                        const decodedToken = jwt_decode(token);
-                        var roles = decodedToken.roles;
-                        
-                        localStorage.setItem("TOKEN", token);
-                        localStorage.setItem("ROLES", roles);
-                        localStorage.setItem("ID", decodedToken.accountId);
 
-                        axios.get(`http://localhost:9090/add-local?token=${token}&role=${roles}`);
+        // Gửi yêu cầu POST tới API
+        axios.post('http://45.63.79.165:8080/api/account/sign-in', data)
+            .then(response => {
+                console.log('Response:', response.data);
 
-                        const isAdmin = roles.includes("ADMIN");
+                var status = response.data.data.status_code_value;
 
-                        var titleStr = '';
-                        if (isAdmin) {
-                            titleStr = 'Đăng nhập với quyền admin thành công, chuyển hướng sau 2s';
-                        } else {
-                            titleStr = 'Đăng nhập thành công, chuyển hướng sau 2s'
-                        }
-                        Swal.fire({
-                            icon: 'success',
-                            title: titleStr,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                        }).then(() => {
-                            setTimeout(() => {
-                                if (isAdmin) {
-                                    window.location.href = "http://localhost:9090/";  
-                                } else {
-                                    window.location.href = "/index";  
-                                }
-                            }, 2000);   
-                        });
+                if (status == 200) {
+                    var token = response.data.data.body.token;
+                    const decodedToken = jwt_decode(token);
+                    var roles = decodedToken.roles;
 
-                    } else if (status == 400) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Username hoặc mật khẩu không chính xác',
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2000,
-                        })
+                    localStorage.setItem("TOKEN", token);
+                    localStorage.setItem("ROLES", roles);
+                    localStorage.setItem("ID", decodedToken.accountId);
+
+                    // axios.get(`http://localhost:9090/add-local?token=${token}&role=${roles}`);
+
+                    const isAdmin = roles.includes("ADMIN");
+
+                    var titleStr = '';
+                    if (isAdmin) {
+                        titleStr = 'Đăng nhập với quyền admin thành công, chuyển hướng sau 2s';
+                    } else {
+                        titleStr = 'Đăng nhập thành công, chuyển hướng sau 2s'
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error.response ? error.response.data : error.message);
-                });
-        }
+                    Swal.fire({
+                        icon: 'success',
+                        title: titleStr,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    }).then(() => {
+                        setTimeout(() => {
+                            if (isAdmin) {
+                                window.location.href = "http://localhost:9090/";
+                            } else {
+                                window.location.href = "/index";
+                            }
+                        }, 2000);
+                    });
 
-    </script>
+                } else if (status == 400) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Username hoặc mật khẩu không chính xác',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    })
+                }
+                // Sửa axios interceptor để bỏ qua các API public
+                axios.interceptors.request.use(config => {
+                    // Kiểm tra xem URL có trong danh sách public APIs không
+                    const isPublicAPI = publicAPIs.some(api => config.url.includes(api));
+
+                    if (!isPublicAPI) {
+                        const token = localStorage.getItem('TOKEN');
+                        if (token) {
+                            config.headers.Authorization = `Bearer ${token}`;
+                        }
+                    }
+
+                    return config;
+                }, error => {
+                    return Promise.reject(error);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error.response ? error.response.data : error.message);
+            });
+    }
+
+</script>
 
 </body>
 

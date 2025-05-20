@@ -24,8 +24,8 @@ public class AccountServiceImpl implements AccountService {
 
     private RestClient restClient;
     private ObjectMapper objectMapper;
-    private static final String USER_ENDPOINT = "http://localhost:9995/api"; // Cổng của user-service
-    private static final String AUTH_ENDPOINT = "http://localhost:9996/api";
+    private static final String USER_ENDPOINT = "http://45.63.79.165:8080/api"; // Cổng của user-service
+    private static final String AUTH_ENDPOINT = "http://45.63.79.165:8080/api";
 
     public AccountServiceImpl(RestClient restClient, ObjectMapper objectMapper) {
         this.restClient = restClient;
@@ -33,12 +33,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private String getJwtToken(HttpServletRequest request) {
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            String token = (String) session.getAttribute("jwtToken");
-//            return token != null ? "Bearer " + token : null;
-//        }
-//        return null;
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            log.info("JWT token found in request header");
+            return authHeader; // Đã có "Bearer " prefix
+        }
 
         return "Bearer " + Utilfunctions.GET_TOKEN_LOCAL();
     }
@@ -373,7 +372,7 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("No JWT token found in session");
         }
 
-        String rolesUrl = "http://localhost:9996/api/account/" + account.getAccountId() + "/roles/" + roleName;
+        String rolesUrl = "http://45.63.79.165:8080/api/account/" + account.getAccountId() + "/roles/" + roleName;
         log.info("Calling API to delete role: {}", rolesUrl);
 
         ResponseEntity<String> responseEntity = restClient.delete()
@@ -393,7 +392,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccountByUsername(String username, HttpServletRequest request) {
-        String url = "http://localhost:9996/api/account/search/findByUsername?username=" + username;
+        String url = "http://45.63.79.165:8080/api/account/search/findByUsername?username=" + username;
         String token = getJwtToken(request);
         if (token == null) {
             log.error("No JWT token found in session");

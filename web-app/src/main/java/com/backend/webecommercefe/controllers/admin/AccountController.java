@@ -26,9 +26,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @GetMapping("/login")
     public ModelAndView login(ModelAndView model) {
         model.addObject("account", new Account());
@@ -78,42 +75,6 @@ public class AccountController {
             model.setViewName("account/register");
         }
         return model;
-    }
-
-    @PostMapping("/login")
-    public String loginSubmit(@ModelAttribute("account") Account account,
-                              HttpSession session,
-                              RedirectAttributes redirectAttributes) {
-        try {
-            ApiResponse response = accountService.login(account.getUsername(), account.getPassword());
-            log.info("Login response: {}", response);
-
-            int status = response.getStatus();
-            if (status == HttpStatus.OK.value() || status == HttpStatus.CREATED.value()) {
-                if (response.getData() instanceof Map) {
-                    Map<String, Object> data = (Map<String, Object>) response.getData();
-                    if (data.containsKey("body") && data.get("body") instanceof Map) {
-                        Map<String, Object> body = (Map<String, Object>) data.get("body");
-                        String token = (String) body.get("token");
-                        if (token != null) {
-                            session.setAttribute("jwtToken", token);
-                            log.info("JWT token saved to session: {}", token);
-                            return "redirect:/admin/customer";
-                        }
-                    }
-                    redirectAttributes.addFlashAttribute("error", "Token not found in response");
-                    return "redirect:/account/login";
-                }
-                redirectAttributes.addFlashAttribute("error", "Invalid response format");
-                return "redirect:/account/login";
-            }
-            redirectAttributes.addFlashAttribute("error", response.getErrors() != null ? response.getErrors() : "Login failed");
-            return "redirect:/account/login";
-        } catch (Exception e) {
-            log.error("Error in loginSubmit: {}", e.getMessage());
-            redirectAttributes.addFlashAttribute("error", "An error occurred during login");
-            return "redirect:/account/login";
-        }
     }
 
     @GetMapping("/logout")
